@@ -16,6 +16,9 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <a href="{{ logout_path() }}" class="btn btn-danger pull-right">Logout</a>
             {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('app_admin_admin') }}" class="btn btn-primary">Manage quizzes</a>
+            {% endif %}
             {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
                 <a href="{{ path('register') }}" class="btn btn-success pull-right" style="margin: 0 5px;">Register</a>
                 <a href="{{ path('login') }}" class="btn btn-success pull-right" style="margin: 0 5px;">Login</a>
