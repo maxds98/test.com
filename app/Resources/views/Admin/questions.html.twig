@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AppBundle:Admin:admin{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h3>questions</h3>
+        <div class="panel-body">
+            {{ form(form) }}
+        </div>
+        {% for i in 0..questions|length-1 %}
+            <div class="dropdown">
+                <a href="" data-toggle="dropdown" class="dropdown-toggle">{{ i+1 }}. {{ questions[i]['question'] }}<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><h5>{{ questions[i]['answer1'] }}</h5></li>
+                    <li><h5>{{ questions[i]['answer2'] }}</h5></li>
+                    <li><h5>{{ questions[i]['answer3'] }}</h5></li>
+                    <li><h5><font style="color: green">{{ questions[i]['answerTrue'] }}</font></h5></li>
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

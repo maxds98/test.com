@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AppBundle:Homepage:homepage{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-2">
+        <h3>TOP 10:</h3>
+        {% for i in 0..top|length-1 %}
+            {% if top[i]['rating'] != null %}
+                <h4>{{ i+1 }}. {{ top[i]['username'] }}: {{ top[i]['rating'] }}<br></h4>
+            {% else %}
+                <h4>{{ i+1 }}. {{ top[i]['username'] }}: 0<br></h4>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-md-6">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <br><br><br>
+            <label>
+            {% if app.request.get('count') != null %}
+                <h3>Your result: {{ app.request.get('count') }}</h3>
+            {% endif %}
+            </label>
+            {% for i in 0..quizzes|length-1 %}
+                {% if quizzes[i]['status'] == 'true' %}
+                    <a href="{{ path('app_game_play') }}?quiz={{ quizzes[i]['id']-1 }}" class="btn btn-success center-block btn-lg">Play {{ quizzes[i]['name'] }}</a>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+        <h1 class="text-center">Login to play</h1>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

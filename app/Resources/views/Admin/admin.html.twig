@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AppBundle:Admin:admin{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="btn-group btn-group-justified">
+        <a href="{{ path('questions') }}" class="btn btn-primary btn-lg">Create questions</a>
+        <a href="{{ path('quizzes') }}" class="btn btn-primary btn-lg">Create quiz</a>
+    </div>
+</div>
+{% endblock %}

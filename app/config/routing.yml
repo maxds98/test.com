@@ -1,0 +1,10 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+recover:
+    path: /recover/{token}
+    defaults: { _controller: AppBundle:Recover:recover, token: null }
+recoverPassword:
+    path: /recover/password
+user:
+    path: /user

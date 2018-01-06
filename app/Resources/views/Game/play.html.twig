@@ -1,0 +1,103 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AppBundle:Game:play{% endblock %}
+
+{% block body %}
+    <input type="hidden" id="answerc">
+    <h3>
+        <div class="container">
+            <div id="numq" style="display: inline-block"></div>
+            <div id="question" style="display: inline-block"></div>
+        </div>
+    </h3>
+    <div class="radio">
+        <label><input type="radio" name="optradio" id="answer1" value="{{ answer[0][0] }}"><div id="answer1l"></div></label>
+    </div>
+    <div class="radio">
+        <label><input type="radio" name="optradio" id="answer2" value="{{ answer[0][1] }}"><div id="answer2l"></div></label>
+    </div>
+    <div class="radio">
+        <label><input type="radio" name="optradio" id="answer3" value="{{ answer[0][2] }}"><div id="answer3l"></div></label>
+    </div>
+    <div class="radio">
+        <label><input type="radio" name="optradio" id="answer4" value="{{ answer[0][3] }}"><div id="answer4l"></div></label>
+    </div>
+    <div class="container">
+        {% set width = 100/(answer|length+2) %}
+        {% for i in 0..answer|length-1 %}
+            <div id="div{{ i }}" style="border-radius: 10px; width: {{ width }}%;height: 20px;display: inline-block;border: 1px solid black"></div>
+        {% endfor %}
+    </div>
+    <a onclick="
+        var inp = document.getElementsByName('optradio');
+        for (var i = 0; i < inp.length; i++) {
+            if (inp[i].checked) {
+                num++;
+            }
+        }
+        answer(num);
+                " class="btn btn-success pull-right">Submit</a>
+{% endblock %}
+{% block javascripts %}
+<script>
+    var answers = Array();
+    var questions = Array();
+    {% for i in 0..answer|length-1 %}
+    answers[{{ i }}] = Array();
+    questions[{{ i }}] = '{{ question[i] }}';
+    {% for j in 0..answer[i]|length-1 %}
+        answers[{{ i }}][{{ j }}] = '{{ answer[i][j] }}';
+    {% endfor %}
+    {% endfor %}
+    var num = -1;
+    document.getElementById('numq').innerText = '1)';
+    document.getElementById('question').innerText = questions[0];
+    document.getElementById('answer1').setAttribute('value', answers[0][0]);
+    document.getElementById('answer1l').innerText = answers[0][0];
+    document.getElementById('answer2').setAttribute('value', answers[0][1]);
+    document.getElementById('answer2l').innerText = answers[0][1];
+    document.getElementById('answer3').setAttribute('value', answers[0][2]);
+    document.getElementById('answer3l').innerText = answers[0][2];
+    document.getElementById('answer4').setAttribute('value', answers[0][3]);
+    document.getElementById('answer4l').innerText = answers[0][3];
+
+    function answer(num) {
+        var inp = document.getElementsByName('optradio');
+        for (var i = 0; i < inp.length; i++) {
+            if (inp[i].checked) {
+                console.log(num);
+                if(num >= parseInt({{ answer|length }})-1){
+                    if (inp[i].value === answers[num][4]){
+                        document.getElementById('answerc').innerText = document.getElementById('answerc').textContent + '1';
+                        document.getElementById('div'+num.toString()).style.backgroundColor = 'green';
+                    }
+                    console.log('end');
+                    window.location.replace("{{ path('setRating') }}?count="+document.getElementById('answerc').textContent.length);
+                } else {
+                    if (inp[i].value === answers[num][4]){
+                        num++;
+                        document.getElementById('answerc').innerText = document.getElementById('answerc').textContent + '1';
+                        console.log(document.getElementById('answerc').textContent.length);
+                        document.getElementById('div'+(num-1).toString()).style.backgroundColor = 'green';
+                    } else {
+                        num++;
+                        console.log(document.getElementById('answerc').textContent.length);
+                        document.getElementById('div'+(num-1).toString()).style.backgroundColor = 'red';
+                    }
+                }
+                document.getElementById('numq').innerText = (num+1).toString()+')   ';
+                document.getElementById('question').innerText = questions[num];
+                document.getElementById('answer1').setAttribute('value', answers[num][0]);
+                document.getElementById('answer1l').innerText = answers[num][0];
+                document.getElementById('answer2').setAttribute('value', answers[num][1]);
+                document.getElementById('answer2l').innerText = answers[num][1];
+                document.getElementById('answer3').setAttribute('value', answers[num][2]);
+                document.getElementById('answer3l').innerText = answers[num][2];
+                document.getElementById('answer4').setAttribute('value', answers[num][3]);
+                document.getElementById('answer4l').innerText = answers[num][3];
+            }
+        }
+    }
+
+</script>
+{% endblock %}
