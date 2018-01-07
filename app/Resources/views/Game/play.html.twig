@@ -3,6 +3,19 @@
 {% block title %}AppBundle:Game:play{% endblock %}
 
 {% block body %}
+    <h3>TOP 3:</h3>
+    {% if top != null %}
+    {% for i in 0..top|length-1 %}
+        {% if i > 2 %}
+        {% else %}
+            {% if top[i]['result'] != null %}
+            <h4>{{ i+1 }} {{ user[i] }} {{ top[i]['result'] }}<br></h4>
+            {% else %}
+                <h4>{{ i+1 }} {{ user[i] }} 0<br></h4>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    {% endif %}
     <input type="hidden" id="answerc">
     <h3>
         <div class="container">
@@ -72,7 +85,7 @@
                         document.getElementById('div'+num.toString()).style.backgroundColor = 'green';
                     }
                     console.log('end');
-                    window.location.replace("{{ path('setRating') }}?count="+document.getElementById('answerc').textContent.length);
+                    window.location.replace("{{ path('setRating') }}?count="+document.getElementById('answerc').textContent.length+"&quiz={{ quiz }}");
                 } else {
                     if (inp[i].value === answers[num][4]){
                         num++;

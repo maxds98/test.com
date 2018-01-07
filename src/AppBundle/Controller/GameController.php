@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Questions;
 use AppBundle\Entity\Quizzes;
+use AppBundle\Entity\Results;
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,12 +22,41 @@ class GameController extends Controller
             $answers[$i] = $this->getAnswers($quizzes[$i]);
             $questions[$i] = $this->getQuestion($quizzes[$i]);
         }
-
+        $topResult = $this->getTopResults();
+        $topUsers = $this->getTopUsers();
             return $this->render('Game/play.html.twig', [
+                'quiz' => $_GET['quiz'],
                 'question' => $questions,
                 'answer' => $answers,
+                'top' => $topResult,
+                'user' => $topUsers,
             ]);
     }
+
+    private function getTopResults()
+    {
+        $repository = $this->getDoctrine()->getRepository(Results::class);
+        $query = $repository->createQueryBuilder('p')->addOrderBy('p.result', 'DESC')->where('p.quizId ='.$_GET['quiz'])->getQuery();
+        $result = $query->getArrayResult();
+
+        return $result;
+    }
+
+    private function getTopUsers()
+    {
+        $repository = $this->getDoctrine()->getRepository(Results::class);
+        $query = $repository->createQueryBuilder('p')->addOrderBy('p.result', 'DESC')->where('p.quizId ='.$_GET['quiz'])->getQuery();
+        $result = $query->getArrayResult();
+
+        $users = array();
+        $em = $this->getDoctrine()->getManager();
+        for ($i = 0; $i < count($result); $i++){
+            $users[] = $em->getRepository('AppBundle:User')->find($result[$i]['userId'])->getUsername();
+        }
+
+        return $users;
+    }
+
     private function getQuery()
     {
         $repository = $this->getDoctrine()->getRepository(Questions::class);
@@ -34,12 +64,14 @@ class GameController extends Controller
         $result = $query->getArrayResult();
         return $result;
     }
+
     private function getQuestion($i)
     {
         $result = $this->getQuery();
         $question = $result[$i]['question'];
         return $question;
     }
+
     private function getAnswers($i)
     {
         $result = $this->getQuery();
@@ -51,6 +83,7 @@ class GameController extends Controller
         $answers[] = $result[$i]['answerTrue'];
         return $answers;
     }
+
     private function getQuizzes($quiz)
     {
         $repository = $this->getDoctrine()->getRepository(Quizzes::class);

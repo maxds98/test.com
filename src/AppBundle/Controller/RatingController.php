@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Results;
 use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -28,11 +29,32 @@ class RatingController extends Controller
     {
         /** @var User $user */
         $user = $this->getUser();
+        $quiz_result = new Results();
         if($_GET['count']) {
+            $em = $this->getDoctrine()->getManager();
+
+            $count = $_GET['count'];
+
+            $query = $this->getDoctrine()->getRepository('AppBundle:Results')->createQueryBuilder('p')
+                ->update('AppBundle:Results', 'p')
+                ->set('p.userId', $user->getId())
+                ->set('p.quizId', $_GET['quiz'])
+                ->set('p.result', $count)
+                ->where('p.quizId ='.$_GET['quiz'])
+                ->where('p.userId ='.$user->getId())
+                ->getQuery()
+                ->execute();
+
+            if(!$query){
+                $quiz_result->setUserId($user->getId());
+                $quiz_result->setQuizId($_GET['quiz']);
+                $quiz_result->setResult($count);
+                $em->persist($quiz_result);
+            }
+
             $rating = $user->getRating();
             $result = intval($rating) + $_GET['count'];
             $user->setRating($result);
-            $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
         }

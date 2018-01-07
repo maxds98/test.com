@@ -30,6 +30,7 @@ class AdminController extends Controller
      */
     public function questionsAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
         $questions = $this->getQuestions();
         $em = $this->getDoctrine()->getManager();
 
@@ -68,6 +69,7 @@ class AdminController extends Controller
      */
     public function quizzesAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
         $quizzes = $this->getQuizzes();
         $questions = $this->getQuestions();
         $em = $this->getDoctrine()->getManager();

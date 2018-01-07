@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,13 +33,19 @@ class Results
      * @var int
      *
      * @ORM\Column(name="quiz_id", type="integer")
+     * @ORM\OneToOne(targetEntity="Quizzes", mappedBy="id")
      */
     private $quizId;
+
+    public function __construct()
+    {
+        $this->quizId = new ArrayCollection();
+    }
 
     /**
      * @var int
      *
-     * @ORM\Column(name="result", type="integer")
+     * @ORM\Column(name="result", type="integer", nullable=true)
      */
     private $result;
 
@@ -125,4 +132,3 @@ class Results
         return $this->result;
     }
 }
-

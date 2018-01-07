@@ -187,4 +187,3 @@ class Questions
         return $this->answerTrue;
     }
 }
-
