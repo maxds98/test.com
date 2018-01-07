@@ -21,8 +21,9 @@ class RatingController extends Controller
     public function ratingControllerAction()
     {
         $this->setRating();
-        return $this->redirectToRoute('homepage', array(
+        return $this->redirectToRoute('result', array(
             'count' => $_GET['count'],
+            'quiz' => $_GET['quiz'],
         ));
     }
     private function setRating()
@@ -40,8 +41,8 @@ class RatingController extends Controller
                 ->set('p.userId', $user->getId())
                 ->set('p.quizId', $_GET['quiz'])
                 ->set('p.result', $count)
-                ->where('p.quizId ='.$_GET['quiz'])
-                ->where('p.userId ='.$user->getId())
+                ->andWhere('p.quizId ='.$_GET['quiz'])
+                ->andWhere('p.userId ='.$user->getId())
                 ->getQuery()
                 ->execute();
 

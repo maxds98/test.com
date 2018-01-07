@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AppBundle:Play:quizzes{% endblock %}
+
+{% block body %}
+<style>
+    .container-size{
+        height: 20%;
+        width: 90%;
+        border: solid #565656 1px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        background-color: #dadada;
+    }
+</style>
+<h1>Choose the quiz!</h1>
+    {% for i in 0..quizzes|length-1 %}
+        {% if quizzes[i]['status'] == 'true' %}
+            <div class="container container-size">
+                <h2>{{ quizzes[i]['name'] }}</h2>
+                {% if top_user[i] != '' %}
+                <h3>Top player: {{ top_user[i] }}</h3>
+                    {% else %}
+                    <h3>You can be the first!</h3>
+                {% endif %}
+                <a href="{{ path('app_game_play') }}?quiz={{ quizzes[i]['id']-1 }}" class="btn btn-success pull-right">Start</a>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

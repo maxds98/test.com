@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AppBundle:Top:top{% endblock %}
+
+{% block body %}
+<h1>Top players</h1>
+    {% for i in 0..top|length-1 %}
+        {% if top[i]['rating'] != null %}
+            {% set top_result = top[i]['rating'] %}
+        {% else %}
+            {% set top_result = 0 %}
+        {% endif %}
+        <h4>{{ i+1 }}. {{ top[i]['username'] }}: {{ top_result }}<br></h4>
+    {% endfor %}
+{% endblock %}

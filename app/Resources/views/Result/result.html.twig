@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AppBundle:Result:result{% endblock %}
+
+{% block body %}
+    <div align="center">
+<h1>Your result: {{ count }}</h1>
+    {% if top != null %}
+        <h3>TOP 3:</h3>
+        {% for i in 0..top|length-1 %}
+            {% if i > 2 %}
+            {% else %}
+                {% if top[i]['result'] != null %}
+                    <h4>{{ i+1 }}. {{ user[i] }}: {{ top[i]['result'] }}<br></h4>
+                {% else %}
+                    <h4>{{ i+1 }}. {{ user[i] }}: 0<br></h4>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <a href="{{ path('homepage') }}" class="btn btn-success navbar-btn" style="margin: 5px;">Homepage</a>
+    <a href="{{ path('quizzes_list') }}" class="btn btn-success navbar-btn" style="margin: 5px;">Play another quiz</a>
+    </div>
+{% endblock %}
