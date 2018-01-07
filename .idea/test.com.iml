@@ -141,5 +141,6 @@
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="bootstrap" level="application" />
     <orderEntry type="library" name="select2" level="application" />
+    <orderEntry type="library" name="421a392181" level="application" />
   </component>
 </module>
