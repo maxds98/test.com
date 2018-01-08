@@ -39,7 +39,10 @@ class PlayController extends Controller
         $result = array();
 
         for($j = 0; $j < count($quizzes); $j++){
-            $query = $repository->createQueryBuilder('p')->addOrderBy('p.result', 'DESC')->where('p.quizId ='.$j)->getQuery();
+            $query = $repository->createQueryBuilder('p')
+                ->addOrderBy('p.result', 'DESC')
+                ->where('p.quizId ='.$j)
+                ->getQuery();
             $result[] = $query->getArrayResult();
         }
 

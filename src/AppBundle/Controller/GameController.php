@@ -37,7 +37,10 @@ class GameController extends Controller
     private function getTopResults()
     {
         $repository = $this->getDoctrine()->getRepository(Results::class);
-        $query = $repository->createQueryBuilder('p')->addOrderBy('p.result', 'DESC')->where('p.quizId ='.$_GET['quiz'])->getQuery();
+        $query = $repository->createQueryBuilder('p')
+            ->addOrderBy('p.result', 'DESC')
+            ->where('p.quizId ='.$_GET['quiz'])
+            ->getQuery();
         $result = $query->getArrayResult();
 
         return $result;
@@ -46,13 +49,18 @@ class GameController extends Controller
     private function getTopUsers()
     {
         $repository = $this->getDoctrine()->getRepository(Results::class);
-        $query = $repository->createQueryBuilder('p')->addOrderBy('p.result', 'DESC')->where('p.quizId ='.$_GET['quiz'])->getQuery();
+        $query = $repository->createQueryBuilder('p')
+            ->addOrderBy('p.result', 'DESC')
+            ->where('p.quizId ='.$_GET['quiz'])
+            ->getQuery();
         $result = $query->getArrayResult();
 
         $users = array();
         $em = $this->getDoctrine()->getManager();
         for ($i = 0; $i < count($result); $i++){
-            $users[] = $em->getRepository('AppBundle:User')->find($result[$i]['userId'])->getUsername();
+            $users[] = $em->getRepository('AppBundle:User')
+                ->find($result[$i]['userId'])
+                ->getUsername();
         }
 
         return $users;

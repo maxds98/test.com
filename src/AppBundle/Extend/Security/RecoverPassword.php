@@ -43,20 +43,17 @@ class RecoverPassword
      */
     public function send(User $user){
         $token = md5(uniqid(rand(), true));
-
         $url = $this->router->generate('recover', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
         $name = $user->getUsername();
         $template = $this->twig->render('MailTemplate/recover.html.twig', [
             'name' => $name,
             'url' => $url
         ]);
-
         $mail = \Swift_Message::newInstance();
         $mail->setFrom('Max_D_S@tut.by');
         $mail->setTo($user->getEmail());
         $mail->setSubject('Recover Password');
         $mail->setBody($template, 'text/html');
-
         $user->setTokenRecover($token);
         $this->em->persist($user);
         $this->em->flush();

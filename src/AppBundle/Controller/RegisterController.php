@@ -20,13 +20,9 @@ class RegisterController extends Controller
     public function registerAction(Request $request, UserPasswordEncoderInterface $encoder)
     {
         $em = $this->getDoctrine()->getManager();
-
         $user = new User();
-
         $form = $this->createForm(UserType::class, $user);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()){
             $user->setPassword($encoder->encodePassword($user, $user->getPassword()));
             $user->setStatus('1');

@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\Models\RecoverUserModel;
 use AppBundle\Form\RecoverUserForm;
+use Doctrine\ORM\OptimisticLockException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -14,7 +15,6 @@ class RecoverController extends Controller
     {
         if ($token){
             $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneBy(array('tokenRecover'=>$token));
-            var_dump($user);
             $userPasswordToken = new UsernamePasswordToken($user, null, 'main', array('IS_AUTHENTICATED_FULLY'));
             $this->get('security.token_storage')->setToken($userPasswordToken);
             return $this->redirectToRoute('recoverPassword');
@@ -27,13 +27,18 @@ class RecoverController extends Controller
             $email = $recoverModel->getEmail();
             $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneBy(array('email'=>$email));
             if ($user){
-                $this->get('user.security.recover')->send($user);
+                try {
+                    $this->get('user.security.recover')->send($user);
+                } catch (OptimisticLockException $e) {
+                } catch (\Twig_Error_Loader $e) {
+                } catch (\Twig_Error_Runtime $e) {
+                } catch (\Twig_Error_Syntax $e) {
+                }
             } else {
                 $error = 'No user with this email!';
             }
 
             var_dump('message send');
-            //return $this->redirectToRoute('recover');
         }
         return $this->render('Recover/recover.html.twig', array(
             'recover_form' => $recoverForm->createView(),

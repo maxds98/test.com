@@ -26,7 +26,6 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $password = $encoder->encodePassword($user, '0000');
         $user->setPassword($password);
         $user->setStatus('1');
-
         $manager->persist($user);
         $manager->flush();
     }
