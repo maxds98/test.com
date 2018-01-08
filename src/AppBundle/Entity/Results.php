@@ -49,6 +49,28 @@ class Results
      */
     private $result;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="time", type="integer", nullable=true)
+     */
+    private $time;
+
+    /**
+     * @return int
+     */
+    public function getTime()
+    {
+        return $this->time;
+    }
+
+    /**
+     * @param int $time
+     */
+    public function setTime($time)
+    {
+        $this->time = $time;
+    }
 
     /**
      * Get id

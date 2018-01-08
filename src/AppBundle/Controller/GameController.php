@@ -30,6 +30,7 @@ class GameController extends Controller
                 'answer' => $answers,
                 'top' => $topResult,
                 'user' => $topUsers,
+                'start' => time(),
             ]);
     }
 

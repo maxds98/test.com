@@ -21,13 +21,18 @@ class ResultController extends Controller
             'quiz' => $_GET['quiz'],
             'top' => $topResult,
             'user' => $topUsers,
+            'time' => $_GET['time'],
         ));
     }
 
     private function getTopResults()
     {
         $repository = $this->getDoctrine()->getRepository(Results::class);
-        $query = $repository->createQueryBuilder('p')->addOrderBy('p.result', 'DESC')->where('p.quizId ='.$_GET['quiz'])->getQuery();
+        $query = $repository->createQueryBuilder('p')
+            ->addOrderBy('p.result', 'DESC')
+            ->addOrderBy('p.time', 'ASC')
+            ->where('p.quizId ='.$_GET['quiz'])
+            ->getQuery();
         $result = $query->getArrayResult();
 
         return $result;
@@ -36,7 +41,11 @@ class ResultController extends Controller
     private function getTopUsers()
     {
         $repository = $this->getDoctrine()->getRepository(Results::class);
-        $query = $repository->createQueryBuilder('p')->addOrderBy('p.result', 'DESC')->where('p.quizId ='.$_GET['quiz'])->getQuery();
+        $query = $repository->createQueryBuilder('p')
+            ->addOrderBy('p.result', 'DESC')
+            ->addOrderBy('p.time', 'ASC')
+            ->where('p.quizId ='.$_GET['quiz'])
+            ->getQuery();
         $result = $query->getArrayResult();
 
         $users = array();

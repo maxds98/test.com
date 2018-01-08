@@ -85,7 +85,7 @@
                         document.getElementById('div'+num.toString()).style.backgroundColor = 'green';
                     }
                     console.log('end');
-                    window.location.replace("{{ path('setRating') }}?count="+document.getElementById('answerc').textContent.length+"&quiz={{ quiz }}");
+                    window.location.replace("{{ path('setRating') }}?count="+document.getElementById('answerc').textContent.length+"&quiz={{ quiz }}"+"&start={{ start }}");
                 } else {
                     if (inp[i].value === answers[num][4]){
                         num++;

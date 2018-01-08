@@ -10,6 +10,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Results;
 use AppBundle\Entity\User;
+use Doctrine\DBAL\Types\IntegerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -20,13 +21,15 @@ class RatingController extends Controller
      */
     public function ratingControllerAction()
     {
-        $this->setRating();
+        $time = time() - $_GET['start'];
+        $this->setRating($time);
         return $this->redirectToRoute('result', array(
             'count' => $_GET['count'],
             'quiz' => $_GET['quiz'],
+            'time' => $time,
         ));
     }
-    private function setRating()
+    private function setRating($time)
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -41,6 +44,7 @@ class RatingController extends Controller
                 ->set('p.userId', $user->getId())
                 ->set('p.quizId', $_GET['quiz'])
                 ->set('p.result', $count)
+                ->set('p.time', $time)
                 ->andWhere('p.quizId ='.$_GET['quiz'])
                 ->andWhere('p.userId ='.$user->getId())
                 ->getQuery()
@@ -50,6 +54,7 @@ class RatingController extends Controller
                 $quiz_result->setUserId($user->getId());
                 $quiz_result->setQuizId($_GET['quiz']);
                 $quiz_result->setResult($count);
+                $quiz_result->setTime($time);
                 $em->persist($quiz_result);
             }
 
