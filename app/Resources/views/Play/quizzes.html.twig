@@ -14,17 +14,19 @@
     }
 </style>
 <h1>Choose the quiz!</h1>
-    {% for i in 0..quizzes|length-1 %}
-        {% if quizzes[i]['status'] == 'true' %}
-            <div class="container container-size">
-                <h2>{{ quizzes[i]['name'] }}</h2>
-                {% if top_user[i] != '' %}
-                <h3>Top player: {{ top_user[i] }}</h3>
-                    {% else %}
-                    <h3>You can be the first!</h3>
-                {% endif %}
-                <a href="{{ path('app_game_play') }}?quiz={{i}}" class="btn btn-success pull-right">Start</a>
-            </div>
-        {% endif %}
-    {% endfor %}
+    {% if quizzes|length != 0 %}
+        {% for i in 0..quizzes|length-1 %}
+            {% if quizzes[i]['status'] == 'true' %}
+                <div class="container container-size">
+                    <h2>{{ quizzes[i]['name'] }}</h2>
+                    {% if top_user[i] != '' %}
+                    <h3>Top player: {{ top_user[i] }}</h3>
+                        {% else %}
+                        <h3>You can be the first!</h3>
+                    {% endif %}
+                    <a href="{{ path('app_game_play') }}?quiz={{i}}" class="btn btn-success pull-right">Start</a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 {% endblock %}

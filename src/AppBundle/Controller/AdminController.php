@@ -120,6 +120,40 @@ class AdminController extends Controller
         $em->remove($quiz);
         $em->flush();
 
+        $repository = $this->getDoctrine()->getRepository(Results::class);
+        $repository->createQueryBuilder('p')
+            ->delete()
+            ->where('p.quizId ='.($_GET['id']-1))
+            ->getQuery()
+            ->execute();
+
+        return $this->redirectToRoute('quizzes', array(
+            'id' => $_GET['id'],
+        ));
+    }
+
+    /**
+     * @Route("/admin/quizzes/set", name="set_status")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function setQuizStatus(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $quiz = $em->getRepository(Quizzes::class)->find($_GET['id']);
+        if($quiz->getStatus() == 'true'){
+            $quiz->setStatus('false');
+        } else {
+            $quiz->setStatus('true');
+        }
+        if (!$quiz) {
+            throw $this->createNotFoundException(
+                'No quiz found for id '.$_GET['id']
+            );
+        }
+        $em->persist($quiz);
+        $em->flush();
+
         return $this->redirectToRoute('quizzes', array(
             'id' => $_GET['id'],
         ));

@@ -22,7 +22,9 @@ class TopController extends Controller
     private function getUsers()
     {
         $repository = $this->getDoctrine()->getRepository(User::class);
-        $query = $repository->createQueryBuilder('p')->addOrderBy('p.rating', 'DESC')->getQuery();
+        $query = $repository->createQueryBuilder('p')
+            ->addOrderBy('p.rating', 'DESC')
+            ->getQuery();
         $user = $query->getArrayResult();
         return $user;
     }

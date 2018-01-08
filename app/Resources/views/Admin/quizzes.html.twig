@@ -7,6 +7,7 @@
         <h3>quizzes</h3>
         <div class="panel-body">
             <select class="js-example-basic-single" name="state">
+                <option selected="selected"></option>
                 {% for i in 0..questions|length-1 %}
                     <option value="{{ i }}">{{ i }}) {{ questions[i]['question'] }}</option>
                 {% endfor %}
@@ -17,7 +18,9 @@
         </div>
         {% if quizzes|length != 0 %}
             {% for i in 0..quizzes|length-1 %}
-                <h4>{{ i+1 }}. {{ quizzes[i]['name'] }}<br></h4> <a href="{{ path('remove_quiz') }}?id={{ quizzes[i]['id']}}">remove</a>
+                <h4>{{ i+1 }}. {{ quizzes[i]['name'] }} status: {{ quizzes[i]['status'] }}</h4>
+                <a href="{{ path('remove_quiz') }}?id={{ quizzes[i]['id']}}">remove</a> |
+                <a href="{{ path('set_status') }}?id={{ quizzes[i]['id']}}">change status</a>
             {% endfor %}
         {% endif %}
     </div>
@@ -35,8 +38,6 @@
             } else {
                 document.getElementById('quizzes_questions').value += ','+(obj[0].id).toString();
             }
-            document.getElementById('text').innerText += (obj[0].text).toString()+'\n';
-            console.log(document.getElementById('quizzes_questions').textContent);
         });
     </script>
 {% endblock %}
