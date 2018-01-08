@@ -8,3 +8,6 @@ recoverPassword:
     path: /recover/password
 user:
     path: /user
+#index:
+#    path:  /
+#    defaults: { _controller: AppBundle:Homepage:homepage}

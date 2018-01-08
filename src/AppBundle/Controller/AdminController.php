@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Questions;
 use AppBundle\Entity\Quizzes;
+use AppBundle\Entity\Results;
 use AppBundle\Form\QuestionType;
 use AppBundle\Form\QuizzesType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -100,6 +101,28 @@ class AdminController extends Controller
         $query = $repository->createQueryBuilder('p')->getQuery();
         $result = $query->getArrayResult();
         return $result;
+    }
+
+    /**
+     * @Route("/admin/quizzes/remove", name="remove_quiz")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function removeQuizAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $quiz = $em->getRepository(Quizzes::class)->find($_GET['id']);
+        if (!$quiz) {
+            throw $this->createNotFoundException(
+                'No quiz found for id '.$_GET['id']
+            );
+        }
+        $em->remove($quiz);
+        $em->flush();
+
+        return $this->redirectToRoute('quizzes', array(
+            'id' => $_GET['id'],
+        ));
     }
 
 }

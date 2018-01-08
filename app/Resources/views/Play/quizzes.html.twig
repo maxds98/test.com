@@ -23,7 +23,7 @@
                     {% else %}
                     <h3>You can be the first!</h3>
                 {% endif %}
-                <a href="{{ path('app_game_play') }}?quiz={{ quizzes[i]['id']-1 }}" class="btn btn-success pull-right">Start</a>
+                <a href="{{ path('app_game_play') }}?quiz={{i}}" class="btn btn-success pull-right">Start</a>
             </div>
         {% endif %}
     {% endfor %}

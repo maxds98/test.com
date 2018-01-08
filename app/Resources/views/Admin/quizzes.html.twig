@@ -15,9 +15,11 @@
             <div id="text"></div>
             <a href="{{ path('questions') }}" class="btn btn-success pull-right">Add new question</a>
         </div>
-        {% for i in 0..quizzes|length-1 %}
-            <h4>{{ i+1 }}. {{ quizzes[i]['name'] }}<br></h4>
-        {% endfor %}
+        {% if quizzes|length != 0 %}
+            {% for i in 0..quizzes|length-1 %}
+                <h4>{{ i+1 }}. {{ quizzes[i]['name'] }}<br></h4> <a href="{{ path('remove_quiz') }}?id={{ quizzes[i]['id']}}">remove</a>
+            {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}
 {% block javascripts %}
@@ -27,7 +29,7 @@
         });
 
         $('.js-example-basic-single').select2().on("change", function(e) {
-            var obj = $(".js-example-basic-single").select2("data");
+            var obj = $('.js-example-basic-single').select2("data");
             if(document.getElementById('quizzes_questions').value === ''){
                 document.getElementById('quizzes_questions').value += (obj[0].id).toString()
             } else {
