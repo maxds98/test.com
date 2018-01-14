@@ -54,7 +54,7 @@ class AdminController extends Controller
         ));
     }
 
-    private function getQuestions()
+    public function getQuestions()
     {
         $repository = $this->getDoctrine()->getRepository(Questions::class);
         $query = $repository->createQueryBuilder('p')->getQuery();

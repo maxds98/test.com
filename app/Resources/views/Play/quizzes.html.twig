@@ -18,7 +18,7 @@
         {% for i in 0..quizzes|length-1 %}
             {% if quizzes[i]['status'] == 'true' %}
                 <div class="container container-size">
-                    <h2>{{ quizzes[i]['name'] }}</h2>
+                    <h2>{{ quizzes[i].name }}</h2>
                     {% if top_user[i] != '' %}
                     <h3>Top player: {{ top_user[i] }}</h3>
                         {% else %}
